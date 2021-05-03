@@ -63,12 +63,16 @@ end
 local callbacks = {}
 
 function callbacks.onSimulationStart()
+	net.dostring_in("mission", "a_do_script('env.mission.name = \"".. DCS.getMissionName() .. "\"')")
+
     logInfo("Handling onSimulationStart")
 
     for name, loader in pairs(loaders) do
         logInfo("Loading module " .. name)
         loader()
     end
+
 end
+
 
 DCS.setUserCallbacks(callbacks)
