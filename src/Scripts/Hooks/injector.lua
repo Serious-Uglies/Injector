@@ -1,4 +1,3 @@
-local io = require('io')
 local lfs = require('lfs')
 local log = require('log')
 local net = require('net')
@@ -22,15 +21,10 @@ local function loadHook(path, dir)
 end
 
 local function loadFile(path, dir)
-    local file = io.open(path, "r")
-    local content = file:read("*a")
-
-    local script = string.format('package.path = "%s/?.lua;" .. package.path; package.cpath = "%s/?.dll;" .. package.cpath; %s', dir, dir, content)
-	local result, success = net.dostring_in("mission", "a_do_script([===[" .. script .. "]===])")
-
-    file:close()
-
-    return result, success
+    return net.dostring_in("mission", string.format([=[
+        a_do_script('package.path = "%s/?.lua;" .. package.path; package.cpath = "%s/?.dll;" .. package.cpath;')
+        a_do_script('loadfile(%q)()')
+    ]=], dir, dir, path))
 end
 
 local function logResult(success, result)
