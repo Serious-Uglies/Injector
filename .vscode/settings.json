@@ -2,4 +2,5 @@
   "Lua.diagnostics.globals": [
     "DCS"
   ],
+  "Lua.runtime.version": "Lua 5.1"
 }
